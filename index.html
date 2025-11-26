@@ -4,876 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDFMaster - Free Online PDF Editor</title>
-    <meta name="description" content="Edit PDF files online for free with PDFMaster. Add text, annotations, signatures, and more. No software installation required.">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        :root {
-            --primary: #1a365d;
-            --secondary: #4299e1;
-            --accent: #38a169;
-            --neutral: #718096;
-            --bg: #fafafa;
-            --surface: #ffffff;
-        }
-        
         * { font-family: 'Inter', sans-serif; }
-        
-        body { background-color: var(--bg); color: var(--primary); }
-        
-        .hero-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.1); /* Fallback simplified */
-            z-index: 1;
-        }
-        
-        .hero-content { position: relative; z-index: 2; }
-        
-        .upload-zone {
-            border: 2px dashed #4299e1;
-            transition: all 0.3s ease;
-        }
-        
-        .upload-zone:hover {
-            border-color: #38a169;
-            background-color: rgba(56, 161, 105, 0.05);
-        }
-        
-        .upload-zone.dragover {
-            border-color: #ed8936;
-            background-color: rgba(237, 137, 54, 0.1);
-            transform: scale(1.02);
-        }
-        
-        .toolbar {
-            background: linear-gradient(90deg, var(--surface) 0%, #f7fafc 100%);
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .pdf-canvas {
-            background: var(--surface);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        
-        .sidebar {
-            background: var(--surface);
-            border-right: 1px solid #e2e8f0;
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-            background: var(--surface);
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-        
+        .hero-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .btn-primary {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            background: linear-gradient(135deg, #4299e1 0%, #1a365d 100%);
+            color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);
-        }
-        
-        .btn-secondary {
-            background: var(--surface);
-            color: var(--primary);
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid var(--neutral);
-            cursor: pointer;
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--secondary);
-            color: var(--secondary);
-        }
-        
-        .nav-link {
-            color: var(--primary);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 6px;
-        }
-        
-        .nav-link:hover {
-            background-color: rgba(66, 153, 225, 0.1);
-            color: var(--secondary);
-        }
-        
-        .tool-btn {
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-        
-        .tool-btn:hover {
-            background-color: rgba(66, 153, 225, 0.1);
-            border-color: var(--secondary);
-        }
-        
-        .tool-btn.active {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        .floating-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2rem; }
-            .pdf-editor { flex-direction: column; }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid #e2e8f0;
-            }
-        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3); }
+        .upload-zone:hover { border-color: #38a169; background-color: rgba(56, 161, 105, 0.05); }
+        .tool-btn.active { background-color: #4299e1; color: white; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-slate-800">
+
     <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <span class="ml-3 text-xl font-bold text-gray-900">PDFMaster</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="nav-link" onclick="scrollToEditor(); return false;">Editor</a>
-                    <a href="#" class="nav-link">Features</a>
-                    <button class="btn-primary" onclick="scrollToEditor()">Start Editing</button>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-gray-900">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#" class="nav-link block" onclick="scrollToEditor(); return false;">Editor</a>
-                <button class="btn-primary w-full mt-4" onclick="scrollToEditor()">Start Editing</button>
-            </div>
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <span class="text-xl font-bold text-gray-900">PDFMaster</span>
+            <button class="btn-primary" onclick="scrollToUpload()">Start Editing</button>
         </div>
     </nav>
 
-    <section class="hero-bg pt-20 pb-16">
-        <div class="floating-particles"></div>
-        <div class="hero-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 fade-in">
-                    Edit PDFs <span class="text-yellow-300">Online</span> for Free
-                </h1>
-                <p class="text-xl text-gray-200 mb-8 max-w-3xl mx-auto fade-in">
-                    Professional PDF editing made simple. Add text, annotations, and more directly in your browser.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in">
-                    <button class="btn-primary text-lg px-8 py-4" onclick="scrollToEditor()">
-                        Start Editing Now
-                    </button>
-                </div>
-            </div>
-            
-            <div class="max-w-2xl mx-auto fade-in">
-                <div id="upload-zone" class="upload-zone bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-12 text-center cursor-pointer">
-                    <svg class="mx-auto h-16 w-16 text-white mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                    <h3 class="text-xl font-semibold text-white mb-2">Upload Your PDF</h3>
-                    <p class="text-gray-200 mb-6">Drag and drop your file here or click to browse</p>
-                    <input type="file" id="file-input" accept=".pdf" class="hidden">
-                    <button class="btn-primary" onclick="document.getElementById('file-input').click()">
-                        Choose File
-                    </button>
-                    <p class="text-sm text-gray-300 mt-4">Maximum file size: 50MB</p>
-                </div>
+    <section class="hero-bg pt-24 pb-16 text-center text-white">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">Edit PDFs Online</h1>
+        <p class="text-xl text-gray-200 mb-8">Professional PDF editing made simple.</p>
+        
+        <div class="max-w-2xl mx-auto px-4">
+            <div id="upload-zone" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-blue-400 bg-white bg-opacity-10 rounded-lg p-12 cursor-pointer transition hover:bg-opacity-20">
+                <h3 class="text-xl font-semibold mb-2">Click to Upload PDF</h3>
+                <p class="text-gray-200 text-sm">Or drag and drop file here</p>
+                <input type="file" id="file-input" accept=".pdf" class="hidden" onchange="handleFileSelect(this)">
             </div>
         </div>
     </section>
 
-    <section id="editor-section" class="py-16 bg-gray-50" style="display: none; min-height: 800px;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
-                <div class="toolbar p-4">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <div class="flex items-center space-x-2 border-r pr-4 mr-4">
-                            <button class="tool-btn active" data-tool="select" title="Select">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
-                            </button>
-                            <button class="tool-btn" data-tool="text" title="Add Text">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                            </button>
-                            <button class="tool-btn" data-tool="highlight" title="Highlight" onclick="addHighlight()">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
-                            </button>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2 border-r pr-4 mr-4">
-                             <button class="tool-btn" title="Add Comment" onclick="addComment()">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                            </button>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2">
-                            <button class="tool-btn" onclick="undo()" title="Undo (Ctrl+Z)">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l4 4m-4-4l4-4"></path></svg>
-                            </button>
-                            <button class="tool-btn" onclick="redo()" title="Redo (Ctrl+Y)">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10H11a8 8 0 00-8 8v2m12-10l-4 4m4-4l-4-4"></path></svg>
-                            </button>
-                        </div>
-                        
-                        <div class="ml-auto flex items-center space-x-2">
-                            <select id="zoom-select" class="px-3 py-2 border rounded-lg text-sm bg-white">
-                                <option value="50">50%</option>
-                                <option value="75">75%</option>
-                                <option value="100" selected>100%</option>
-                                <option value="125">125%</option>
-                                <option value="150">150%</option>
-                            </select>
-                            <button class="btn-primary flex items-center" onclick="downloadPDF()">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                Download PDF
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <section id="editor-section" class="hidden py-8 min-h-screen bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 h-full">
+            <div class="bg-white rounded-lg shadow-lg flex flex-col h-[800px]">
                 
-                <div class="pdf-editor flex flex-1 overflow-hidden" style="min-height: 600px;">
-                    <div class="sidebar w-64 p-4 overflow-y-auto bg-gray-50 hidden md:block">
-                        <h3 class="font-semibold text-gray-700 mb-4">Pages</h3>
-                        <div id="page-thumbnails" class="space-y-4">
-                            </div>
-                        
-                        <div class="mt-8 pt-4 border-t">
-                            <h3 class="font-semibold text-gray-700 mb-2">Document Info</h3>
-                            <div class="text-sm text-gray-600 space-y-1">
-                                <div>Pages: <span id="page-count">-</span></div>
-                                <div>Size: <span id="file-size">-</span></div>
-                            </div>
-                        </div>
+                <div class="p-4 border-b flex gap-2 items-center flex-wrap bg-gray-50">
+                    <button class="p-2 rounded hover:bg-blue-100 tool-btn active" onclick="selectTool('select')" title="Select">Select</button>
+                    <button class="p-2 rounded hover:bg-blue-100 tool-btn" onclick="selectTool('text')" title="Add Text">Add Text</button>
+                    <button class="p-2 rounded hover:bg-blue-100 tool-btn" onclick="selectTool('highlight')" title="Highlight">Highlight</button>
+                    <div class="ml-auto">
+                        <button class="btn-primary py-2 px-4 text-sm" onclick="downloadPDF()">Download PDF</button>
                     </div>
-                    
-                    <div class="flex-1 bg-gray-200 p-4 md:p-8 overflow-auto relative" id="canvas-container">
-                        <div id="pdf-canvas" class="pdf-canvas mx-auto bg-white shadow-xl transition-transform origin-top-center" style="width: 595px; min-height: 842px;">
-                            <div class="flex items-center justify-center h-full text-gray-500" style="min-height: 842px;">
-                                <div class="text-center">
-                                    <svg class="mx-auto h-16 w-16 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <p class="text-lg font-medium">Document Area</p>
-                                </div>
-                            </div>
+                </div>
+
+                <div class="flex-1 bg-gray-200 p-8 overflow-auto flex justify-center">
+                    <div id="pdf-canvas" class="bg-white shadow-2xl w-[595px] min-h-[842px] p-12 relative">
+                        <div class="text-center text-gray-400 mt-20">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4">Sample Document Loaded</h2>
+                            <p>You can now click on tools above to edit.</p>
+                            <p class="mt-4 p-4 border rounded bg-gray-50 text-gray-600 editable-text">
+                                This is a sample text. Click 'Add Text' tool to edit me!
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 PDFMaster. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
-        // Simple script to trigger fade-in animations on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const animatedElements = document.querySelectorAll('.fade-in');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            animatedElements.forEach(el => observer.observe(el));
-        });
+        // Scroll to upload section
+        function scrollToUpload() {
+            document.getElementById('upload-zone').scrollIntoView({ behavior: 'smooth' });
+        }
 
-        // PDFMaster - Main JavaScript Logic
-        // Global variables
-        let currentFile = null;
+        // Handle File Selection
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                alert("File Uploaded: " + file.name + "\n(Opening Editor...)");
+                
+                // Show editor
+                document.getElementById('editor-section').classList.remove('hidden');
+                document.getElementById('editor-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Tool Selection Logic
         let currentTool = 'select';
-        let zoomLevel = 100;
-        let undoStack = [];
-        let redoStack = [];
-        let pageCount = 0;
-        let currentPage = 1;
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            setupEventListeners();
-            createFloatingParticles();
-        });
-
-        // Initialize application
-        function initializeApp() {
-            console.log('PDFMaster initialized');
-            
-            // Set up mobile menu
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-            
-            // Initialize tool buttons
-            const toolButtons = document.querySelectorAll('.tool-btn[data-tool]');
-            toolButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    selectTool(this.dataset.tool);
-                });
-            });
-            
-            // Initialize zoom control
-            const zoomSelect = document.getElementById('zoom-select');
-            if (zoomSelect) {
-                zoomSelect.addEventListener('change', function() {
-                    setZoom(parseInt(this.value));
-                });
-            }
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            // File upload handling
-            const uploadZone = document.getElementById('upload-zone');
-            const fileInput = document.getElementById('file-input');
-            
-            if (uploadZone && fileInput) {
-                // Click to upload
-                uploadZone.addEventListener('click', function() {
-                    fileInput.click();
-                });
-                
-                // Drag and drop
-                uploadZone.addEventListener('dragover', function(e) {
-                    e.preventDefault();
-                    this.classList.add('dragover');
-                });
-                
-                uploadZone.addEventListener('dragleave', function(e) {
-                    e.preventDefault();
-                    this.classList.remove('dragover');
-                });
-                
-                uploadZone.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    this.classList.remove('dragover');
-                    const files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        handleFileUpload(files[0]);
-                    }
-                });
-                
-                // File input change
-                fileInput.addEventListener('change', function(e) {
-                    if (e.target.files.length > 0) {
-                        handleFileUpload(e.target.files[0]);
-                    }
-                });
-            }
-            
-            // Keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey || e.metaKey) {
-                    switch(e.key) {
-                        case 'z':
-                            e.preventDefault();
-                            if (e.shiftKey) {
-                                redo();
-                            } else {
-                                undo();
-                            }
-                            break;
-                        case 'y':
-                            e.preventDefault();
-                            redo();
-                            break;
-                    }
-                }
-            });
-        }
-
-        // Handle file upload
-        function handleFileUpload(file) {
-            if (!file || file.type !== 'application/pdf') {
-                showNotification('Please select a valid PDF file', 'error');
-                return;
-            }
-            
-            if (file.size > 50 * 1024 * 1024) { // 50MB limit
-                showNotification('File size must be less than 50MB', 'error');
-                return;
-            }
-            
-            currentFile = file;
-            
-            // Show loading state
-            showNotification('Uploading and processing PDF...', 'info');
-            
-            // Simulate PDF processing
-            setTimeout(() => {
-                processPDF(file);
-                showEditor();
-                showNotification('PDF loaded successfully!', 'success');
-            }, 1500);
-        }
-
-        // Process PDF file (simulation)
-        function processPDF(file) {
-            // Simulation: Real PDF processing would require a library like PDF.js
-            
-            pageCount = Math.floor(Math.random() * 5) + 3; // Random page count 3-8
-            const fileSize = (file.size / (1024 * 1024)).toFixed(2);
-            
-            // Update document info
-            const pageCountEl = document.getElementById('page-count');
-            const fileSizeEl = document.getElementById('file-size');
-            if(pageCountEl) pageCountEl.textContent = pageCount;
-            if(fileSizeEl) fileSizeEl.textContent = fileSize + ' MB';
-            
-            // Generate page thumbnails
-            generatePageThumbnails();
-            
-            // Load PDF content
-            loadPDFContent();
-        }
-
-        // Generate page thumbnails
-        function generatePageThumbnails() {
-            const thumbnailsContainer = document.getElementById('page-thumbnails');
-            if (!thumbnailsContainer) return;
-            
-            thumbnailsContainer.innerHTML = '';
-            
-            for (let i = 1; i <= pageCount; i++) {
-                const thumbnail = document.createElement('div');
-                thumbnail.className = `page-thumbnail bg-white rounded p-2 cursor-pointer hover:bg-blue-50 transition-colors border ${i === currentPage ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`;
-                thumbnail.innerHTML = `
-                    <div class="bg-gray-100 rounded h-24 mb-2 flex items-center justify-center text-xs text-gray-400 shadow-sm">
-                        Sample Page Content
-                    </div>
-                    <div class="text-xs text-center text-gray-600 font-medium">Page ${i}</div>
-                `;
-                
-                thumbnail.addEventListener('click', () => goToPage(i));
-                thumbnailsContainer.appendChild(thumbnail);
-            }
-        }
-
-        // Load PDF content (simulation with dummy HTML)
-        function loadPDFContent() {
-            const canvas = document.getElementById('pdf-canvas');
-            if (!canvas) return;
-            
-            // Create a mock PDF page (This is NOT the real PDF)
-            canvas.innerHTML = `
-                <div class="pdf-page bg-white p-12 shadow-sm" style="min-height: 842px;">
-                    <div class="mb-8 border-b pb-4">
-                        <h1 class="text-3xl font-bold text-gray-800 mb-2">SAMPLE DOCUMENT</h1>
-                        <p class="text-sm text-gray-500">Uploaded File: ${currentFile ? currentFile.name : 'document.pdf'} | Page ${currentPage}</p>
-                    </div>
-                    
-                    <div class="space-y-6 text-gray-700 leading-relaxed font-serif">
-                        <p class="editable-text p-1 hover:bg-gray-50 rounded" contenteditable="false">This is a sample representation of your PDF document. In this demo version, the actual PDF content is not rendered, but you can interact with this dummy text to test the features.</p>
-                        
-                        <h2 class="text-xl font-semibold text-gray-800 mt-6">Try the Editing Tools</h2>
-                        <p class="editable-text p-1 hover:bg-gray-50 rounded" contenteditable="false">1. Select the <b>Text Tool</b> and click on these paragraphs to edit them.</p>
-                        <p class="editable-text p-1 hover:bg-gray-50 rounded" contenteditable="false">2. Use the <b>Highlight Tool</b> to select text and apply a yellow background.</p>
-                        <p class="editable-text p-1 hover:bg-gray-50 rounded" contenteditable="false">3. Use the <b>Comment Tool</b> to add sticky notes to text selections.</p>
-                        
-                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-100 mt-8">
-                            <h3 class="text-lg font-semibold text-blue-800 mb-2">Privacy Note</h3>
-                            <p class="text-blue-900 text-sm">Since this is a client-side demo, your files are NOT uploaded to any server. All processing happens right here in your browser.</p>
-                        </div>
-                        
-                         <p class="editable-text p-1 hover:bg-gray-50 rounded mt-8" contenteditable="false">Go ahead and try modifying this document!</p>
-                    </div>
-                    
-                    <div class="mt-16 pt-4 border-t text-center text-gray-400 text-sm">
-                        End of Page ${currentPage}
-                    </div>
-                </div>
-            `;
-            
-            // Make text editable based on tool selection
-            setupEditableText();
-            saveState(); // Save initial state
-        }
-
-        // Setup editable text functionality
-        function setupEditableText() {
-            const editableTexts = document.querySelectorAll('.editable-text');
-            editableTexts.forEach(text => {
-                text.addEventListener('click', function() {
-                    if (currentTool === 'text') {
-                        this.contentEditable = true;
-                        this.focus();
-                        this.classList.add('outline-blue-500', 'outline-2', 'outline');
-                    }
-                });
-                
-                text.addEventListener('blur', function() {
-                    this.contentEditable = false;
-                    this.classList.remove('outline-blue-500', 'outline-2', 'outline');
-                    saveState();
-                });
-            });
-        }
-
-        // Show editor interface
-        function showEditor() {
-            const editorSection = document.getElementById('editor-section');
-            if (editorSection) {
-                editorSection.style.display = 'block';
-                editorSection.scrollIntoView({ behavior: 'smooth' });
-                // Refresh thumbnails UI
-                generatePageThumbnails();
-            }
-        }
-
-        // Scroll to editor
-        function scrollToEditor() {
-            const editorSection = document.getElementById('editor-section');
-            const fileInput = document.getElementById('file-input');
-            
-            if (editorSection && editorSection.style.display !== 'none') {
-                editorSection.scrollIntoView({ behavior: 'smooth' });
-            } else if (fileInput) {
-                // If editor not visible, trigger upload
-                fileInput.click();
-            }
-        }
-
-        // Tool selection
         function selectTool(tool) {
             currentTool = tool;
             
-            // Update UI
-            document.querySelectorAll('.tool-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-100', 'text-blue-600');
-            });
-            
-            const activeBtn = document.querySelector(`[data-tool="${tool}"]`);
-            if (activeBtn) {
-                activeBtn.classList.add('active', 'bg-blue-100', 'text-blue-600');
-            }
-            
-            // Update cursor based on tool
-            const canvasContainer = document.getElementById('canvas-container');
-            if (canvasContainer) {
-                switch(tool) {
-                    case 'text':
-                        canvasContainer.style.cursor = 'text';
-                        break;
-                    case 'highlight':
-                    case 'draw':
-                        canvasContainer.style.cursor = 'crosshair';
-                        break;
-                    default:
-                        canvasContainer.style.cursor = 'default';
-                        break;
-                }
-            }
-            
-            showNotification(`${tool.charAt(0).toUpperCase() + tool.slice(1)} tool selected`, 'info');
-        }
+            // Update buttons style
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active', 'bg-blue-500', 'text-white'));
+            event.target.classList.add('active', 'bg-blue-500', 'text-white');
 
-        // Zoom functionality
-        function setZoom(level) {
-            zoomLevel = level;
+            // Change cursor
             const canvas = document.getElementById('pdf-canvas');
-            if (canvas) {
-                canvas.style.transform = `scale(${level / 100})`;
-            }
-            showNotification(`Zoom: ${level}%`, 'info');
+            if (tool === 'text') canvas.style.cursor = 'text';
+            else if (tool === 'highlight') canvas.style.cursor = 'crosshair';
+            else canvas.style.cursor = 'default';
+
+            alert(tool + " tool selected!");
         }
 
-        // Page navigation (Simulation)
-        function goToPage(page) {
-            if (page >= 1 && page <= pageCount) {
-                currentPage = page;
-                loadPDFContent();
-                generatePageThumbnails(); // Update active state
-            }
-        }
-
-        // Undo functionality
-        function undo() {
-            if (undoStack.length > 1) { // Keep initial state
-                const currentState = undoStack.pop();
-                redoStack.push(currentState);
-                const previousState = undoStack[undoStack.length - 1];
-                restoreState(previousState);
-                showNotification('Undo', 'info');
-            }
-        }
-
-        // Redo functionality
-        function redo() {
-            if (redoStack.length > 0) {
-                const state = redoStack.pop();
-                undoStack.push(state);
-                restoreState(state);
-                showNotification('Redo', 'info');
-            }
-        }
-
-        // Save current state of canvas
-        function saveState() {
-            const canvas = document.getElementById('pdf-canvas');
-            if (canvas) {
-                const state = canvas.innerHTML;
-                // Only save if different from last state
-                if (undoStack.length === 0 || undoStack[undoStack.length - 1] !== state) {
-                     undoStack.push(state);
-                     redoStack = []; // Clear redo stack on new action
-                }
-            }
-        }
-
-        // Restore state to canvas
-        function restoreState(state) {
-            const canvas = document.getElementById('pdf-canvas');
-            if (canvas) {
-                canvas.innerHTML = state;
-                setupEditableText(); // Re-attach event listeners
-            }
-        }
-
-        // Download PDF (Simulation - just downloads original file)
+        // Download Logic (Fake)
         function downloadPDF() {
-            if (!currentFile) {
-                showNotification('No file to download', 'error');
-                return;
-            }
-            
-            showNotification('Preparing download...', 'info');
-            
-            setTimeout(() => {
-                // Create a download link for the original file
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(currentFile);
-                // Prefix "edited-" to the filename
-                link.download = 'edited-' + currentFile.name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showNotification('Download started!', 'success');
-            }, 1000);
+            alert("Downloading edited PDF...");
         }
 
-        // Add highlight (Demo functionality on HTML text)
-        function addHighlight() {
-            if (currentTool !== 'highlight') {
-                selectTool('highlight');
-                showNotification('Highlight tool active. Select text to highlight.', 'info');
-                return;
-            }
-
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0 && !selection.isCollapsed) {
-                const range = selection.getRangeAt(0);
-                
-                // Ensure we are highlighting inside the canvas
-                if (!document.getElementById('pdf-canvas').contains(range.commonAncestorContainer)) {
-                     showNotification('Please select text inside the document area.', 'warning');
-                     return;
+        // Enable text editing on click
+        document.getElementById('pdf-canvas').addEventListener('click', function(e) {
+            if (currentTool === 'text') {
+                if (e.target.classList.contains('editable-text')) {
+                    e.target.contentEditable = true;
+                    e.target.focus();
+                } else {
+                    // Simple text addition simulation
+                    const newText = document.createElement('div');
+                    newText.contentEditable = true;
+                    newText.className = 'absolute p-2 border border-blue-300 bg-white rounded editable-text';
+                    newText.innerText = 'New Text';
+                    newText.style.left = e.offsetX + 'px';
+                    newText.style.top = e.offsetY + 'px';
+                    this.appendChild(newText);
+                    newText.focus();
                 }
-
-                try {
-                    const span = document.createElement('span');
-                    span.className = 'bg-yellow-300 rounded-sm';
-                    range.surroundContents(span);
-                    selection.removeAllRanges();
-                    saveState();
-                    showNotification('Text highlighted', 'success');
-                } catch (e) {
-                    showNotification('Complex selection. Try selecting plain text.', 'warning');
-                }
-            } else {
-                showNotification('Please select some text first.', 'info');
             }
-        }
-
-        // Add comment (Demo functionality)
-        function addComment() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0 && !selection.isCollapsed) {
-                 const range = selection.getRangeAt(0);
-                // Ensure we are inside the canvas
-                if (!document.getElementById('pdf-canvas').contains(range.commonAncestorContainer)) {
-                     showNotification('Please select text inside the document area.', 'warning');
-                     return;
-                }
-                
-                const comment = prompt('Enter your comment:');
-                if (comment) {
-                    const span = document.createElement('span');
-                    span.className = 'border-b-2 border-blue-500 bg-blue-50 cursor-pointer relative group';
-                    span.title = comment; // Simple tooltip
-                    
-                    try {
-                         range.surroundContents(span);
-                         selection.removeAllRanges();
-                         saveState();
-                         showNotification('Comment added (hover to view)', 'success');
-                    } catch(e) {
-                        showNotification('Could not add comment to this selection.', 'warning');
-                    }
-                }
-            } else {
-                showNotification('Please select text to add a comment.', 'info');
-            }
-        }
-
-        // Notification system
-        function showNotification(message, type = 'info') {
-            // Remove existing notifications
-            const existing = document.querySelector('.notification-toast');
-            if (existing) {
-                existing.remove();
-            }
-            
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = `notification-toast fixed bottom-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-20 opacity-0 flex items-center`;
-            
-            // Set colors and icon based on type
-            let icon = '';
-            switch(type) {
-                case 'success':
-                    notification.classList.add('bg-green-600', 'text-white');
-                    icon = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-                    break;
-                case 'error':
-                    notification.classList.add('bg-red-600', 'text-white');
-                    icon = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-                    break;
-                case 'warning':
-                    notification.classList.add('bg-yellow-500', 'text-white');
-                     icon = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
-                    break;
-                default:
-                    notification.classList.add('bg-blue-600', 'text-white');
-                    icon = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-            }
-            
-            notification.innerHTML = `${icon}<span>${message}</span>`;
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => {
-                notification.classList.remove('translate-y-20', 'opacity-0');
-            }, 10);
-            
-            // Animate out and remove
-            setTimeout(() => {
-                notification.classList.add('translate-y-20', 'opacity-0');
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        // Create floating particles animation (Simplified for better performance)
-        function createFloatingParticles() {
-            const heroBg = document.querySelector('.floating-particles');
-            if (!heroBg) return;
-            
-            // Reduce number of particles
-            for (let i = 0; i < 10; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 6 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                // Ensure particles stay within bounds horizontally
-                particle.style.left = Math.random() * 95 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.opacity = Math.random() * 0.3 + 0.1;
-                
-                const duration = Math.random() * 10 + 10;
-                particle.style.animation = `float ${duration}s infinite ease-in-out ${Math.random() * 5}s`;
-                
-                heroBg.appendChild(particle);
-            }
-        }
+        });
     </script>
 </body>
 </html>
